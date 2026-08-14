@@ -1,14 +1,16 @@
 import type { MetadataRoute } from "next";
 
+const BROWN = "#6B4423";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "My Next App",
-    short_name: "NextApp",
-    description: "My Next.js PWA",
+    name: "Crappucino",
+    short_name: "Crappucino",
+    description: "Hit the machine. 50/50 chance of Good coffee — or Crapuccino.",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#000000",
+    background_color: BROWN,
+    theme_color: BROWN,
     icons: [
       {
         src: "/icon-192.png",

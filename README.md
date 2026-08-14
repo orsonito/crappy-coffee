@@ -1,37 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Crappucino
 
-## Getting Started
+Template Next.js 16 (App Router) + React 19 + TypeScript + Tailwind v4, configuré pour travailler avec **Claude Code** : fiche agent (`CLAUDE.md`), skill d'équipe, hook lint, et permissions en deny.
 
-First, run the development server:
+## Démarrage
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Autres commandes utiles : `npm run build` · `npm run lint` · `npx tsc --noEmit`. Pas de suite de tests pour l'instant.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Nouveau composant / page : **toujours** via le générateur —
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run g:c OrderCard   # composant client
+npm run g:p menu        # page serveur
+npm run g:p produit/id  # page dynamique
+```
 
-## Learn More
+## Pourquoi cette config agent
 
-To learn more about Next.js, take a look at the following resources:
+Trois couches, trois jobs différents :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Couche | Fichier | Rôle |
+|---|---|---|
+| Conseil | `CLAUDE.md` | Stack, commandes, 3 conventions, 1 piège — court et actionnable |
+| Procédure | skill `scaffold-component` | Comment scaffolder (le modèle peut l'oublier sans skill) |
+| Enforcement | hook + `permissions.deny` | Ce qui doit arriver / être bloqué quoi que dise le modèle |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Skill `scaffold-component`
 
-## Deploy on Vercel
+Sans skill, l'agent invente souvent sa propre arborescence (`components/OrderCard.tsx` à la racine, kebab-case, oubli du `.hooks.ts`). Le générateur du repo impose une forme unique (`file` + `css` + `types` + `hooks` pour les clients).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+La **description** du skill est volontairement précise : déclencheurs (`crée`, `génère`, `ajoute une page`…) et **contre-déclencheurs** (édition / fix / refactor d'existant). Un cas évalué (et deux autres) vivent dans `.claude/skills/scaffold-component/evals/evals.json` — dont le cas #1 (`OrderCard`) a été exécuté : voir `docs/session-trace.md`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# my-next-template
+### Hook PostToolUse (`lint-on-edit`)
+
+Le lint dans `CLAUDE.md` est du conseil. Le hook dans `.claude/settings.json` (matcher `Edit|Write|MultiEdit`) est **déterministe** : après chaque écriture, `node .claude/hooks/lint-on-edit.mjs` relance ESLint sur le fichier touché. Exit `2` + stderr → Claude doit corriger avant de continuer. On a choisi PostToolUse (qualité après coup) plutôt qu'un PreToolUse garde-fou, parce que le risque principal ici n'est pas une commande dangereuse mais du code qui ne passe pas la CI locale.
+
+### Permissions en `deny`
+
+Le hook ne remplace pas les permissions. Dans `.claude/settings.json` :
+
+- `Read` / `Edit` sur `.env` / `.env.*` — secrets hors contexte agent
+- `git push --force` / `-f`, `git reset --hard`, `rm -rf /|~|.` — destructions irréversibles bloquées au harness, pas au prompt
+
+`deny` est évalué par Claude Code **avant** que le modèle décide : plus fiable qu'une ligne « ne fais jamais force push » dans `CLAUDE.md`.
+
+## Trace
+
+Une session où skill + générateur + hook sont visibles : [`docs/session-trace.md`](docs/session-trace.md).

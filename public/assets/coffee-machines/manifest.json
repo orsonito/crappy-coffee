@@ -1,0 +1,54 @@
+{
+  "source": "c__Users_orson.goitia_AppData_Roaming_Cursor_User_workspaceStorage_d1b1024904b2f1a64b08c07903ce317a_images_coffee-machine-7styles-front-final-b7ac3faf-6215-4755-9f04-29841b315507.png",
+  "machines": [
+    {
+      "name": "anime",
+      "pngPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/anime.png",
+      "svgPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/anime.svg",
+      "width": 193,
+      "height": 299
+    },
+    {
+      "name": "manga",
+      "pngPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/manga.png",
+      "svgPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/manga.svg",
+      "width": 195,
+      "height": 298
+    },
+    {
+      "name": "candy-game",
+      "pngPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/candy-game.png",
+      "svgPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/candy-game.svg",
+      "width": 202,
+      "height": 299
+    },
+    {
+      "name": "kawaii",
+      "pngPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/kawaii.png",
+      "svgPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/kawaii.svg",
+      "width": 209,
+      "height": 314
+    },
+    {
+      "name": "realistic",
+      "pngPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/realistic.png",
+      "svgPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/realistic.svg",
+      "width": 170,
+      "height": 273
+    },
+    {
+      "name": "pixel-art",
+      "pngPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/pixel-art.png",
+      "svgPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/pixel-art.svg",
+      "width": 176,
+      "height": 273
+    },
+    {
+      "name": "idle-game",
+      "pngPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/idle-game.png",
+      "svgPath": "/home/orson/Projects/crappy-coffee/public/assets/coffee-machines/idle-game.svg",
+      "width": 182,
+      "height": 273
+    }
+  ]
+}

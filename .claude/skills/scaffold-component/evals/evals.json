@@ -1,0 +1,35 @@
+{
+  "skill_name": "scaffold-component",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Crée un composant client OrderCard pour afficher le nom et le prix d'une commande.",
+      "expected_output": "L'agent lit le skill, lance `npm run g:c OrderCard` (PascalCase), puis remplit les fichiers générés sous `components/ordercard/` sans créer les dossiers/fichiers à la main et sans renommer le dossier en PascalCase.",
+      "assertions": [
+        "La commande exécutée est `npm run g:c OrderCard` (ou équivalent avec OrderCard en PascalCase)",
+        "Aucun Write/Edit ne crée `components/OrderCard/` ni un .tsx hors du générateur avant le scaffold",
+        "Les fichiers finaux vivent sous `components/ordercard/` (minuscules)",
+        "Le composant exporté s'appelle `OrderCard`"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Ajoute une page dynamique produit/[id] qui affiche l'id du produit.",
+      "expected_output": "L'agent lance `npm run g:p produit/id`, conserve `params` en Promise (Next 16), et complète le squelette généré.",
+      "assertions": [
+        "La commande exécutée est `npm run g:p produit/id`",
+        "Le fichier créé est `app/produit/[id]/page.tsx`",
+        "La signature garde `params` comme Promise (await params)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Corrige le lint sur components/register-sw/register-sw.tsx, ne crée rien de nouveau.",
+      "expected_output": "Le skill ne doit PAS se déclencher : édition locale uniquement, pas d'appel à g:c / g:p.",
+      "assertions": [
+        "Aucune commande `npm run g:c` ou `npm run g:p`",
+        "Pas de nouveau dossier sous components/ ou app/"
+      ]
+    }
+  ]
+}
