@@ -111,13 +111,20 @@ export function useVendingMachine() {
   const stainExitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useLayoutEffect(() => {
-    const saved = loadGameSave();
-    if (saved) {
-      setCounts(saved.counts);
-      setUnlockedEpisodeIds(saved.unlockedEpisodeIds);
-      setHasPouredOnce(saved.hasPouredOnce);
-    }
-    setSaveReady(true);
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      const saved = loadGameSave();
+      if (saved) {
+        setCounts(saved.counts);
+        setUnlockedEpisodeIds(saved.unlockedEpisodeIds);
+        setHasPouredOnce(saved.hasPouredOnce);
+      }
+      setSaveReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
