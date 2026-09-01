@@ -34,7 +34,9 @@ const VendingMachine = () => {
     onBannerEnterEnd,
   } = useVendingMachine();
   const pagerRef = useRef<HTMLDivElement>(null);
-  const [pourNudge, setPourNudge] = useState(false);
+  const [pourNudgeActive, setPourNudgeActive] = useState(false);
+  const modalsOpen = coffeeUnlockOpen || storyUnlockOpen;
+  const pourNudge = !modalsOpen && pourNudgeActive;
   const totalCoffees = Object.values(counts).reduce((sum, n) => sum + n, 0);
 
   useEffect(() => {
@@ -63,14 +65,13 @@ const VendingMachine = () => {
   }, []);
 
   useEffect(() => {
-    if (coffeeUnlockOpen || storyUnlockOpen) {
-      setPourNudge(false);
-      return;
-    }
-    setPourNudge(false);
-    const timer = setTimeout(() => setPourNudge(true), POUR_IDLE_MS);
-    return () => clearTimeout(timer);
-  }, [coffeeUnlockOpen, storyUnlockOpen, counts]);
+    if (modalsOpen) return;
+    const timer = setTimeout(() => setPourNudgeActive(true), POUR_IDLE_MS);
+    return () => {
+      clearTimeout(timer);
+      setPourNudgeActive(false);
+    };
+  }, [modalsOpen, counts]);
 
   function scrollPager(direction: -1 | 1) {
     const pager = pagerRef.current;
